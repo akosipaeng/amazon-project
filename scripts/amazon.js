@@ -56,13 +56,14 @@ products.forEach((product) => {
   `;
 });
 
+// Putting product container in HTML
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   let addedMessageTimeoutId;
 
   button.addEventListener("click", () => {
-    const { productId } = button.dataset; // A13h
+    const { productId } = button.dataset;
 
     // Check product if it's already in the cart
     let matchingItem;
@@ -72,19 +73,18 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
         matchingItem = item;
       }
     });
-    ////
+
     const quantitySelector = document.querySelector(
       `.js-quantity-selector-${productId}`
-    ); // A13c
+    );
+
     const addedMessage = document.querySelector(
       `.js-added-to-cart-${productId}`
-    ); // A13j
+    );
+
     addedMessage.classList.add("add-to-cart-visible");
 
-    // setTimeout(() => {
-    //   addedMessage.classList.remove("add-to-cart-visible");
-    // }, 2000); //A13l
-
+    // "add item message" timeout
     if (addedMessageTimeoutId) {
       clearTimeout(addedMessageTimeoutId);
     }
@@ -95,22 +95,27 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
 
     addedMessageTimeoutId = timeoutId;
 
+    // Setting product & cart quantity
     const quantity = Number(quantitySelector.value);
 
     if (matchingItem) {
-      matchingItem.quantity += quantity; // A13d
-      console.log(matchingItem);
+      matchingItem.quantity += quantity;
+      //localStorage.setItem("orders", matchingItem);
+      //localStorage.setItem("cart", JSON.stringify(cart));
     } else {
-      console.log(cart);
       cart.push({
         productId,
         quantity, //A13e A13h
       });
+      // localStorage.setItem("cart", JSON.stringify(cart));
     }
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Cart Quantity
+    // Cart quantity display
+    // const cartData = JSON.parse(localStorage.getItem("cart"));
+    // console.log(cartData);
+
     let cartQuantity = 0;
-
     cart.forEach((item) => {
       cartQuantity += item.quantity;
     });
